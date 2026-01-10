@@ -6,7 +6,6 @@ import dev.cattyn.microkits.utils.SerializationUtil;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,24 +27,24 @@ public class PlayerKit implements Kit {
         return content;
     }
 
-    public static class Serializer implements JsonSerializer<Kit>, JsonDeserializer<Kit> {
-        @Override
-        public JsonElement serialize(Kit kit, Type type, JsonSerializationContext jsonSerializationContext) {
+    public static class Serializer {
+        public JsonElement serialize(Kit kit) {
             JsonObject object = new JsonObject();
             JsonArray content = new JsonArray();
             object.addProperty("name", kit.getName());
-            object.add("content", content);
             for (var entry : kit.getItems().entrySet()) {
                 JsonObject part = new JsonObject();
                 part.addProperty("slot", entry.getKey());
                 part.addProperty("stack", SerializationUtil.serialize(entry.getValue()));
+                content.add(part);
             }
 
-            return null;
+            object.add("content", content);
+
+            return object;
         }
 
-        @Override
-        public Kit deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+        public Kit deserialize(JsonElement jsonElement) {
             if (!jsonElement.isJsonObject())
                 throw new JsonParseException("Not a json object.");
 
@@ -56,16 +55,17 @@ public class PlayerKit implements Kit {
 
             String name = object.get("name").getAsString();
             PlayerKit kit = new PlayerKit(name);
-            for (JsonElement element : object.getAsJsonArray()) {
+            for (JsonElement element : object.getAsJsonArray("content")) {
                 if (!element.isJsonObject())
                     continue;
 
-                if (!object.has("slot") || !object.has("stack"))
+                JsonObject part = element.getAsJsonObject();
+                if (!part.has("slot") || !part.has("stack"))
                     continue;
 
-                int slot = object.get("slot").getAsInt();
+                int slot = part.get("slot").getAsInt();
                 try {
-                    ItemStack stack = SerializationUtil.deserialize(object.get("content").getAsString());
+                    ItemStack stack = SerializationUtil.deserialize(part.get("stack").getAsString());
                     kit.getItems().put(slot, stack);
                 } catch (IOException e) {
                     throw new JsonParseException("Invalid content.");

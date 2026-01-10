@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -30,11 +29,22 @@ public class KitCreatorHandler implements Listener {
         Bukkit.getScheduler().runTask(kits, () -> {
             event.setCursor(event.getOldCursor());
             PlayerInventory inventory = event.getWhoClicked().getInventory();
+            ItemStack stack = event.getCursor();
+            stack.setAmount(stack.getMaxStackSize());
+
             for (int i : event.getInventorySlots()) {
-                inventory.setItem(i, event.getCursor());
+                inventory.setItem(i, stack);
             }
         });
 
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getView().getTopInventory().isEmpty() || !event.getView().getTitle().equals("KitCreator"))
+            return;
+
+        event.getPlayer().getOpenInventory().setCursor(null);
     }
 
     @EventHandler
