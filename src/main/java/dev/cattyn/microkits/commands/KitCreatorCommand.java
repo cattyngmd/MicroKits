@@ -15,14 +15,14 @@ import java.util.List;
 @Alias("creator")
 @Command("kitcreator")
 public class KitCreatorCommand {
-    public static final int SIZE = 9 * 6;
-
     @Default
     public static void creator(CommandSender sender) {
         Player player = (Player) sender;
         List<ItemStack> kitStacks = KitCreatorItems.getStacks();
-        Inventory inventory = Bukkit.createInventory(null, SIZE, "KitCreator");
-        ItemStack[] stacks = new ItemStack[SIZE];
+        int size = (int) (Math.ceil(kitStacks.size() / 9f) * 9);
+
+        Inventory inventory = Bukkit.createInventory(null, size, "KitCreator");
+        ItemStack[] stacks = new ItemStack[size];
         for (int i = 0; i < kitStacks.size(); i++) {
             stacks[i] = kitStacks.get(i).clone();
         }
