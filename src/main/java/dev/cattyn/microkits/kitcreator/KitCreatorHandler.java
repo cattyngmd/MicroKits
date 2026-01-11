@@ -9,7 +9,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import static dev.cattyn.microkits.commands.KitCreatorCommand.SIZE;
 
 public class KitCreatorHandler implements Listener {
     private final MicroKits kits;
@@ -22,7 +21,7 @@ public class KitCreatorHandler implements Listener {
     public void onDrag(InventoryDragEvent event) {
         Inventory inv = event.getInventory();
 
-        if (inv.getSize() != SIZE || inv.getHolder() != null)
+        if (inv.getHolder() != null)
             return;
 
         event.setCancelled(true);
