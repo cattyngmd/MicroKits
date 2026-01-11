@@ -1,5 +1,7 @@
 package dev.cattyn.microkits.players;
 
+import dev.cattyn.microkits.api.Kit;
+import dev.cattyn.microkits.api.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,10 +11,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.*;
 
-public class PlayerManager implements Listener {
-    public static final PlayerManager INSTANCE = new PlayerManager();
+public class PlayerManagerImpl implements PlayerManager, Listener {
+    public static final PlayerManagerImpl INSTANCE = new PlayerManagerImpl();
 
-    private final Set<UUID> selected = new HashSet<>();
+    private final Map<UUID, Kit> selectedKits = new HashMap<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -29,15 +31,16 @@ public class PlayerManager implements Listener {
         remove(event.getEntity());
     }
 
-    public boolean hasSelected(Player player) {
-        return selected.contains(player.getUniqueId());
+    @Override
+    public Kit getSelected(UUID player) {
+        return selectedKits.get(player);
     }
 
-    public void add(Player player) {
-        selected.add(player.getUniqueId());
+    public void add(Player player, Kit kit) {
+        selectedKits.put(player.getUniqueId(), kit);
     }
 
     public void remove(Player player) {
-        selected.remove(player.getUniqueId());
+        selectedKits.remove(player.getUniqueId());
     }
 }

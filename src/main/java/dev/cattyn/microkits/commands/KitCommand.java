@@ -3,7 +3,7 @@ package dev.cattyn.microkits.commands;
 import dev.cattyn.microkits.api.Kit;
 import dev.cattyn.microkits.kits.KitManagerImpl;
 import dev.cattyn.microkits.kits.PlayerKit;
-import dev.cattyn.microkits.players.PlayerManager;
+import dev.cattyn.microkits.players.PlayerManagerImpl;
 import dev.cattyn.microkits.utils.KitStorageUtil;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -62,7 +62,7 @@ public class KitCommand {
     public static void load(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
         if (!(sender instanceof Player player)) return;
 
-        if (PlayerManager.INSTANCE.hasSelected(player)) {
+        if (PlayerManagerImpl.INSTANCE.didSelect(player.getUniqueId())) {
             error("You have already selected a kit!");
         }
 
@@ -71,7 +71,7 @@ public class KitCommand {
             error("Kit not found!");
         }
 
-        PlayerManager.INSTANCE.add(player);
+        PlayerManagerImpl.INSTANCE.add(player, kit);
         kit.getItems().forEach((i, s) -> player.getInventory().setItem(i, s));
     }
 }

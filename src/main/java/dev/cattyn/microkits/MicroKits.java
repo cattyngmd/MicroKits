@@ -3,12 +3,13 @@ package dev.cattyn.microkits;
 import dev.cattyn.microkits.api.KitManager;
 import dev.cattyn.microkits.api.MicroKitsAPI;
 import dev.cattyn.microkits.api.MicroKitsProvider;
+import dev.cattyn.microkits.api.PlayerManager;
 import dev.cattyn.microkits.commands.KitCommand;
 import dev.cattyn.microkits.commands.KitCreatorCommand;
 import dev.cattyn.microkits.kitcreator.KitCreatorHandler;
 import dev.cattyn.microkits.kits.KitHandler;
 import dev.cattyn.microkits.kits.KitManagerImpl;
-import dev.cattyn.microkits.players.PlayerManager;
+import dev.cattyn.microkits.players.PlayerManagerImpl;
 import dev.jorel.commandapi.CommandAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,7 +33,7 @@ public final class MicroKits extends JavaPlugin implements MicroKitsProvider {
 
         getServer().getPluginManager().registerEvents(new KitCreatorHandler(this), this);
         getServer().getPluginManager().registerEvents(new KitHandler(this, KitManagerImpl.INSTANCE), this);
-        getServer().getPluginManager().registerEvents(PlayerManager.INSTANCE, this);
+        getServer().getPluginManager().registerEvents(PlayerManagerImpl.INSTANCE, this);
         CommandAPI.onEnable();
     }
 
@@ -46,7 +47,12 @@ public final class MicroKits extends JavaPlugin implements MicroKitsProvider {
     }
 
     @Override
-    public KitManager getKitManager() {
+    public KitManager getKits() {
         return KitManagerImpl.INSTANCE;
+    }
+
+    @Override
+    public PlayerManager getPlayers() {
+        return PlayerManagerImpl.INSTANCE;
     }
 }
