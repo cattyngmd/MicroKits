@@ -2,6 +2,7 @@ package dev.cattyn.microkits.kitcreator;
 
 import dev.cattyn.microkits.MicroKits;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
@@ -17,8 +18,7 @@ public class KitCreatorHandler implements Listener {
         this.kits = kits;
     }
 
-    @EventHandler
-    public void onDrag(InventoryDragEvent event) {
+    @EventHandler public void onDrag(InventoryDragEvent event) {
         Inventory inv = event.getInventory();
 
         if (inv.getHolder() != null)
@@ -38,16 +38,14 @@ public class KitCreatorHandler implements Listener {
 
     }
 
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
+    @EventHandler public void onInventoryClose(InventoryCloseEvent event) {
         if (event.getView().getTopInventory().isEmpty() || !event.getView().getTitle().equals("KitCreator"))
             return;
 
         event.getPlayer().getOpenInventory().setCursor(null);
     }
 
-    @EventHandler
-    public void onClick(InventoryClickEvent event) {
+    @EventHandler public void onClick(InventoryClickEvent event) {
         if (event.getView().getTopInventory().isEmpty() || !event.getView().getTitle().equals("KitCreator"))
             return;
 
@@ -59,12 +57,28 @@ public class KitCreatorHandler implements Listener {
                     event.getWhoClicked().getOpenInventory().setCursor(null);
                 });
             }
+            if (event.getClickedInventory() == event.getView().getTopInventory()) {
+                event.setCancelled(true);
+                event.getWhoClicked().setItemOnCursor(new ItemStack(Material.AIR));
+            }
             return;
+        }
+
+        Inventory bottom = event.getView().getBottomInventory();
+
+        if (event.getClickedInventory() == bottom) {
+            if (event.getClick() == ClickType.SHIFT_LEFT) {
+                event.setCancelled(true);
+                return;
+            } else if (event.getClick() == ClickType.SHIFT_RIGHT) {
+                event.setCurrentItem(new ItemStack(Material.AIR));
+                event.setCancelled(true);
+                return;
+            }
         }
 
         if (event.getClick() == ClickType.DROP || event.getClick() == ClickType.CONTROL_DROP) {
             event.setCancelled(true);
-            Inventory bottom = event.getView().getBottomInventory();
             if (event.getClickedInventory() == bottom) {
                 bottom.setItem(event.getSlot(), null);
             }
@@ -85,7 +99,6 @@ public class KitCreatorHandler implements Listener {
     private ItemStack getItem(InventoryClickEvent event) {
         if (event.getCurrentItem() == null)
             return null;
-
 
         if (event.getClickedInventory() != event.getView().getTopInventory())
             return null;
