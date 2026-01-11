@@ -1,7 +1,7 @@
 package dev.cattyn.microkits.commands;
 
 import dev.cattyn.microkits.api.Kit;
-import dev.cattyn.microkits.kits.KitManager;
+import dev.cattyn.microkits.kits.KitManagerImpl;
 import dev.cattyn.microkits.kits.PlayerKit;
 import dev.cattyn.microkits.players.PlayerManager;
 import dev.cattyn.microkits.utils.KitStorageUtil;
@@ -26,7 +26,7 @@ public class KitCommand {
     public static void save(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
         if (!(sender instanceof Player player)) return;
 
-        List<Kit> kits = KitManager.INSTANCE.get(player.getUniqueId());
+        List<Kit> kits = KitManagerImpl.INSTANCE.get(player.getUniqueId());
         if (kits.size() >= MAX_KITS) {
             error("Too many kits!");
         }
@@ -39,19 +39,16 @@ public class KitCommand {
             }
             i++;
         }
-        KitManager.INSTANCE.save(player.getUniqueId(), kit);
+        KitManagerImpl.INSTANCE.save(player.getUniqueId(), kit);
         KitStorageUtil.save(player.getUniqueId());
     }
 
     @Subcommand("delete")
     public static void delete(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
         if (!(sender instanceof Player player)) return;
-        boolean removed = KitManager.INSTANCE.remove(player.getUniqueId(), name);
+        boolean removed = KitManagerImpl.INSTANCE.remove(player.getUniqueId(), name);
 
-        if (removed) {
-
-            KitStorageUtil.save(player.getUniqueId());
-        } else {
+        if (!removed) {
             error("Kit was not found.");
         }
     }
@@ -69,7 +66,7 @@ public class KitCommand {
             error("You have already selected a kit!");
         }
 
-        Kit kit = KitManager.INSTANCE.get(player.getUniqueId(), name);
+        Kit kit = KitManagerImpl.INSTANCE.get(player.getUniqueId(), name);
         if (kit == null) {
             error("Kit not found!");
         }

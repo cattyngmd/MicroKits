@@ -8,9 +8,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class KitHandler implements Listener {
     private final MicroKits main;
-    private final KitManager manager;
+    private final KitManagerImpl manager;
 
-    public KitHandler(MicroKits main, KitManager manager) {
+    public KitHandler(MicroKits main, KitManagerImpl manager) {
         this.main = main;
         this.manager = manager;
     }

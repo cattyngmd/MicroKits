@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.cattyn.microkits.MicroKits;
 import dev.cattyn.microkits.api.Kit;
-import dev.cattyn.microkits.kits.KitManager;
+import dev.cattyn.microkits.kits.KitManagerImpl;
 import dev.cattyn.microkits.kits.PlayerKit;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class KitStorageUtil {
 
     public static void save(UUID uuid) {
         Path path = MicroKits.getKitsPath().resolve(uuid.toString() + ".json");
-        List<Kit> kits = KitManager.INSTANCE.get(uuid);
+        List<Kit> kits = KitManagerImpl.INSTANCE.get(uuid);
         save(path, kits);
     }
 
