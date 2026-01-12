@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -16,6 +17,12 @@ public class KitCreatorHandler implements Listener {
 
     public KitCreatorHandler(MicroKits kits) {
         this.kits = kits;
+    }
+
+    @EventHandler public void onMove(PlayerMoveEvent event) {
+        if (event.getPlayer().getOpenInventory().getTitle().equalsIgnoreCase("KitCreator")) {
+            event.getPlayer().closeInventory();
+        }
     }
 
     @EventHandler public void onDrag(InventoryDragEvent event) {
