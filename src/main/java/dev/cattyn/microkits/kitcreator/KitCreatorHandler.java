@@ -28,7 +28,7 @@ public class KitCreatorHandler implements Listener {
     @EventHandler public void onDrag(InventoryDragEvent event) {
         Inventory inv = event.getInventory();
 
-        if (inv.getHolder() != null)
+        if (inv.getHolder() != null || event.getInventorySlots().size() <= 1)
             return;
 
         event.setCancelled(true);
