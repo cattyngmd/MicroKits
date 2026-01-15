@@ -1,10 +1,9 @@
 package dev.cattyn.microkits.commands;
 
 import dev.cattyn.microkits.api.Kit;
-import dev.cattyn.microkits.kits.KitManagerImpl;
-import dev.cattyn.microkits.kits.PlayerKit;
+import dev.cattyn.microkits.kit.KitManagerImpl;
+import dev.cattyn.microkits.kit.PlayerKit;
 import dev.cattyn.microkits.players.PlayerManagerImpl;
-import dev.cattyn.microkits.utils.KitStorageUtil;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Subcommand;
@@ -40,7 +39,6 @@ public class KitCommand {
             i++;
         }
         KitManagerImpl.INSTANCE.save(player.getUniqueId(), kit);
-        KitStorageUtil.save(player.getUniqueId());
     }
 
     @Subcommand("delete")

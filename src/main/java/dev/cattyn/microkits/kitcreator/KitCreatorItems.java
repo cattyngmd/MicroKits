@@ -10,6 +10,9 @@ import org.bukkit.potion.PotionType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @deprecated
+ */
 public class KitCreatorItems {
     private static final List<ItemStack> stacks = new ArrayList<>();
 

@@ -11,4 +11,6 @@ public interface KitManager {
     boolean save(UUID owner, Kit kit);
 
     boolean remove(UUID owner, String name);
+
+    KitStorage getStorage();
 }

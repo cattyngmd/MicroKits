@@ -1,8 +1,9 @@
-package dev.cattyn.microkits.kits;
+package dev.cattyn.microkits.kit;
 
+import dev.cattyn.microkits.MicroKits;
 import dev.cattyn.microkits.api.Kit;
+import dev.cattyn.microkits.api.KitStorage;
 import dev.cattyn.microkits.api.KitManager;
-import dev.cattyn.microkits.utils.KitStorageUtil;
 
 import java.util.*;
 
@@ -10,6 +11,7 @@ public class KitManagerImpl implements KitManager {
     public static final KitManagerImpl INSTANCE = new KitManagerImpl();
 
     private final Map<UUID, List<Kit>> localKits = new HashMap<>();
+    private final KitStorage storage = new JsonKitStorage(MicroKits.getKitsPath());
 
     private KitManagerImpl() {
     }
@@ -30,7 +32,7 @@ public class KitManagerImpl implements KitManager {
     public boolean remove(UUID id, String name) {
         List<Kit> kits = localKits.computeIfAbsent(id, uuid -> new ArrayList<>());
         boolean bl = kits.removeIf(local -> local.getName().equalsIgnoreCase(name));
-        KitStorageUtil.save(id);
+        storage.save(id, kits);
         return bl;
     }
 
@@ -39,19 +41,21 @@ public class KitManagerImpl implements KitManager {
         List<Kit> kits = localKits.computeIfAbsent(id, uuid -> new ArrayList<>());
         kits.removeIf(local -> local.getName().equalsIgnoreCase(kit.getName()));
         kits.add(kit);
-        KitStorageUtil.save(id);
+        storage.save(id, kits);
         return true;
     }
 
-    // data
-    public void saveData(UUID uuid) {
-        KitStorageUtil.save(uuid);
-        localKits.remove(uuid);
+    @Override
+    public KitStorage getStorage() {
+        return storage;
     }
 
-    public void loadData(UUID uuid) {
-        List<Kit> kits = KitStorageUtil.load(uuid);
-        if (kits.isEmpty()) return;
-        localKits.put(uuid, kits);
+    public void loadPlayer(UUID uuid) {
+        storage.load(uuid).ifPresent(kits -> localKits.put(uuid, kits));
+    }
+
+    public void savePlayer(UUID uuid) {
+        storage.save(uuid, get(uuid));
+        localKits.remove(uuid);
     }
 }

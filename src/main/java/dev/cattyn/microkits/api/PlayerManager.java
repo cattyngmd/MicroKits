@@ -7,6 +7,8 @@ import java.util.UUID;
 public interface PlayerManager {
     Kit getSelected(UUID player);
 
+    void removeSelected(UUID player);
+
     default boolean didSelect(UUID uuid) {
         return getSelected(uuid) != null;
     }

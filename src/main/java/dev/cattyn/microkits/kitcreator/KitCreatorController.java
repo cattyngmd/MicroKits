@@ -3,57 +3,14 @@ package dev.cattyn.microkits.kitcreator;
 import dev.cattyn.microkits.MicroKits;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-
-public class KitCreatorHandler implements Listener {
-    private final MicroKits kits;
-
-    public KitCreatorHandler(MicroKits kits) {
-        this.kits = kits;
-    }
-
-    @EventHandler public void onMove(PlayerMoveEvent event) {
-        if (event.getPlayer().getOpenInventory().getTitle().equalsIgnoreCase("KitCreator")) {
-            event.getPlayer().closeInventory();
-        }
-    }
-
-    @EventHandler public void onDrag(InventoryDragEvent event) {
-        Inventory inv = event.getInventory();
-
-        if (inv.getHolder() != null || event.getInventorySlots().size() <= 1)
-            return;
-
-        event.setCancelled(true);
-        Bukkit.getScheduler().runTask(kits, () -> {
-            event.setCursor(event.getOldCursor());
-            PlayerInventory inventory = event.getWhoClicked().getInventory();
-            ItemStack stack = event.getCursor();
-            stack.setAmount(stack.getMaxStackSize());
-
-            for (int i : event.getInventorySlots()) {
-                inventory.setItem(i, stack);
-            }
-        });
-
-    }
-
-    @EventHandler public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getView().getTopInventory().isEmpty() || !event.getView().getTitle().equals("KitCreator"))
-            return;
-
-        event.getPlayer().getOpenInventory().setCursor(null);
-    }
-
-    @EventHandler public void onClick(InventoryClickEvent event) {
-        if (event.getView().getTopInventory().isEmpty() || !event.getView().getTitle().equals("KitCreator"))
+public record KitCreatorController(MicroKits kits) {
+    public void click(InventoryClickEvent event) {
+        if (!(event.getView().getTopInventory().getHolder() instanceof KitCreatorInventory))
             return;
 
         if (event.getCurrentItem() == null) {
@@ -102,6 +59,34 @@ public class KitCreatorHandler implements Listener {
             event.getView().setItem(slot, clone);
         }, 1);
     }
+
+    public void drag(InventoryDragEvent event) {
+        Inventory inv = event.getInventory();
+
+        if (inv.getHolder() != null || event.getInventorySlots().size() <= 1)
+            return;
+
+        event.setCancelled(true);
+        Bukkit.getScheduler().runTask(kits, () -> {
+            event.setCursor(event.getOldCursor());
+            PlayerInventory inventory = event.getWhoClicked().getInventory();
+            ItemStack stack = event.getCursor();
+            stack.setAmount(stack.getMaxStackSize());
+
+            for (int i : event.getInventorySlots()) {
+                inventory.setItem(i, stack);
+            }
+        });
+
+    }
+
+    public void close(InventoryCloseEvent event) {
+        if (!(event.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof KitCreatorInventory))
+            return;
+
+        event.getPlayer().getOpenInventory().setCursor(null);
+    }
+
 
     private ItemStack getItem(InventoryClickEvent event) {
         if (event.getCurrentItem() == null)

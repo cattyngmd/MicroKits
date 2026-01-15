@@ -9,7 +9,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemBuilder {
+/**
+ * @deprecated
+ */
+public final class ItemBuilder {
     private final ItemStack item;
     private final ItemMeta meta;
 
