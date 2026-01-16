@@ -6,6 +6,7 @@ import dev.cattyn.microkits.kit.PlayerKit;
 import dev.cattyn.microkits.players.PlayerManagerImpl;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
+import dev.jorel.commandapi.annotations.Permission;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AStringArgument;
 import dev.jorel.commandapi.exceptions.WrapperCommandSyntaxException;
@@ -18,6 +19,7 @@ import java.util.List;
 import static dev.cattyn.microkits.utils.CommandUtil.error;
 
 @Command("kit")
+@Permission("microkits.kit")
 public class KitCommand {
     private static final short MAX_KITS = 10;
 

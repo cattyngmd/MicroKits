@@ -6,3 +6,11 @@ authors: [ cattyn ]
 website: https://cattyn.dev/
 
 depend: [CommandAPI]
+
+permissions:
+  microkits.kitcreator:
+    description: Allows to open kit creator
+    default: true
+  microkits.kit:
+    description: Allows to execute kit command
+    default: true

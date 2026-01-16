@@ -5,6 +5,7 @@ import dev.cattyn.microkits.kitcreator.KitCreatorItems;
 import dev.jorel.commandapi.annotations.Alias;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
+import dev.jorel.commandapi.annotations.Permission;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Alias("creator")
 @Command("kitcreator")
+@Permission("microkits.kitcreator")
 public class KitCreatorCommand {
     @Default
     public static void creator(CommandSender sender) {
