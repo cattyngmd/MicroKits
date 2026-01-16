@@ -11,7 +11,7 @@ public class KitManagerImpl implements KitManager {
     public static final KitManagerImpl INSTANCE = new KitManagerImpl();
 
     private final Map<UUID, List<Kit>> localKits = new HashMap<>();
-    private final KitStorage storage = new JsonKitStorage(MicroKits.getKitsPath());
+    private final KitStorage storage = new KitStorageJson(MicroKits.getKitsPath());
 
     private KitManagerImpl() {
     }

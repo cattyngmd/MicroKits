@@ -14,12 +14,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class JsonKitStorage implements KitStorage {
+public class KitStorageJson implements KitStorage {
     private static final PlayerKit.Serializer serializer = new PlayerKit.Serializer();
 
     private final Path root;
 
-    public JsonKitStorage(Path root) {
+    public KitStorageJson(Path root) {
         this.root = root;
     }
 
