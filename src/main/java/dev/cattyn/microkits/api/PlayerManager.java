@@ -9,6 +9,8 @@ public interface PlayerManager {
 
     void removeSelected(UUID player);
 
+    void select(UUID player, Kit kit);
+
     default boolean didSelect(UUID uuid) {
         return getSelected(uuid) != null;
     }

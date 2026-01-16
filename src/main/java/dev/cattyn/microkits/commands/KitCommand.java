@@ -1,9 +1,9 @@
 package dev.cattyn.microkits.commands;
 
 import dev.cattyn.microkits.api.Kit;
-import dev.cattyn.microkits.kit.KitManagerImpl;
+import dev.cattyn.microkits.api.MicroKitsAPI;
+import dev.cattyn.microkits.api.MicroKitsProvider;
 import dev.cattyn.microkits.kit.PlayerKit;
-import dev.cattyn.microkits.players.PlayerManagerImpl;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Permission;
@@ -25,9 +25,10 @@ public class KitCommand {
 
     @Subcommand("save")
     public static void save(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
-        if (!(sender instanceof Player player)) return;
+        MicroKitsProvider provider = MicroKitsAPI.getProvider();
 
-        List<Kit> kits = KitManagerImpl.INSTANCE.get(player.getUniqueId());
+        if (!(sender instanceof Player player)) return;
+        List<Kit> kits = provider.getKits().get(player.getUniqueId());
         if (kits.size() >= MAX_KITS) {
             error("Too many kits!");
         }
@@ -40,13 +41,15 @@ public class KitCommand {
             }
             i++;
         }
-        KitManagerImpl.INSTANCE.save(player.getUniqueId(), kit);
+        provider.getKits().save(player.getUniqueId(), kit);
     }
 
     @Subcommand("delete")
     public static void delete(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
+        MicroKitsProvider provider = MicroKitsAPI.getProvider();
+
         if (!(sender instanceof Player player)) return;
-        boolean removed = KitManagerImpl.INSTANCE.remove(player.getUniqueId(), name);
+        boolean removed = provider.getKits().remove(player.getUniqueId(), name);
 
         if (!removed) {
             error("Kit was not found.");
@@ -60,18 +63,20 @@ public class KitCommand {
 
     @Default
     public static void load(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
+        MicroKitsProvider provider = MicroKitsAPI.getProvider();
+
         if (!(sender instanceof Player player)) return;
 
-        if (PlayerManagerImpl.INSTANCE.didSelect(player.getUniqueId())) {
+        if (provider.getPlayers().didSelect(player.getUniqueId())) {
             error("You have already selected a kit!");
         }
 
-        Kit kit = KitManagerImpl.INSTANCE.get(player.getUniqueId(), name);
+        Kit kit = provider.getKits().get(player.getUniqueId(), name);
         if (kit == null) {
             error("Kit not found!");
         }
 
-        PlayerManagerImpl.INSTANCE.add(player, kit);
+        provider.getPlayers().select(player.getUniqueId(), kit);
         kit.getItems().forEach((i, s) -> player.getInventory().setItem(i, s));
     }
 }

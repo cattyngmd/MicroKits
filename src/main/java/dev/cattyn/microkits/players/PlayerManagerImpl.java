@@ -2,7 +2,6 @@ package dev.cattyn.microkits.players;
 
 import dev.cattyn.microkits.api.Kit;
 import dev.cattyn.microkits.api.PlayerManager;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -21,7 +20,8 @@ public class PlayerManagerImpl implements PlayerManager {
         selectedKits.remove(player);
     }
 
-    public void add(Player player, Kit kit) {
-        selectedKits.put(player.getUniqueId(), kit);
+    @Override
+    public void select(UUID player, Kit kit) {
+        selectedKits.put(player, kit);
     }
 }
