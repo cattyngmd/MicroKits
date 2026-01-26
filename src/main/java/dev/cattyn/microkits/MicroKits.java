@@ -3,7 +3,6 @@ package dev.cattyn.microkits;
 import dev.cattyn.microkits.api.*;
 import dev.cattyn.microkits.commands.KitCommand;
 import dev.cattyn.microkits.commands.KitCreatorCommand;
-import dev.cattyn.microkits.commands.ReloadCommand;
 import dev.cattyn.microkits.config.ConfigManagerImpl;
 import dev.cattyn.microkits.kit.KitManagerImpl;
 import dev.cattyn.microkits.listeners.KitCreatorListener;

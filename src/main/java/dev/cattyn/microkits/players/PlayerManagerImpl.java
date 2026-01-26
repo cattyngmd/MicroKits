@@ -3,7 +3,9 @@ package dev.cattyn.microkits.players;
 import dev.cattyn.microkits.api.Kit;
 import dev.cattyn.microkits.api.PlayerManager;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class PlayerManagerImpl implements PlayerManager {
     public static final PlayerManagerImpl INSTANCE = new PlayerManagerImpl();

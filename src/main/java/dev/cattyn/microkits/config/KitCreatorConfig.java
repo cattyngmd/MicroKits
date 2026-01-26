@@ -4,7 +4,10 @@ import dev.cattyn.microkits.api.Config;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class KitCreatorConfig implements Config {
     private final List<ItemStack> items = new ArrayList<>();
