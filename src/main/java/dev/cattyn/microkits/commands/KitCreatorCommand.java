@@ -23,7 +23,7 @@ public class KitCreatorCommand {
     public static void creator(CommandSender sender) {
         Player player = (Player) sender;
         List<ItemStack> kitStacks = MicroKitsAPI.getProvider().getConfigManager().get(KitCreatorConfig.class).items();
-        int size = (int) (Math.ceil(kitStacks.size() / 9f) * 9);
+        int size = (int) (Math.max(Math.ceil(kitStacks.size() / 9f), 1) * 9);
 
         InventoryHolder holder = new KitCreatorInventory(size);
         Inventory inventory = holder.getInventory();
