@@ -1,11 +1,10 @@
 package dev.cattyn.microkits;
 
-import dev.cattyn.microkits.api.KitManager;
-import dev.cattyn.microkits.api.MicroKitsAPI;
-import dev.cattyn.microkits.api.MicroKitsProvider;
-import dev.cattyn.microkits.api.PlayerManager;
+import dev.cattyn.microkits.api.*;
 import dev.cattyn.microkits.commands.KitCommand;
 import dev.cattyn.microkits.commands.KitCreatorCommand;
+import dev.cattyn.microkits.commands.ReloadCommand;
+import dev.cattyn.microkits.config.ConfigManagerImpl;
 import dev.cattyn.microkits.kit.KitManagerImpl;
 import dev.cattyn.microkits.listeners.KitCreatorListener;
 import dev.cattyn.microkits.listeners.PlayerListener;
@@ -16,12 +15,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
 
 public final class MicroKits extends JavaPlugin implements MicroKitsProvider {
+    private final ConfigManager configs = new ConfigManagerImpl();
+
     private static Path KITS_PATH;
 
     @Override
     public void onLoad() {
         KITS_PATH = getDataFolder().toPath().resolve("kits");
         KITS_PATH.toFile().mkdirs();
+
+        saveDefaultConfig();
 
         CommandAPI.registerCommand(KitCommand.class);
         CommandAPI.registerCommand(KitCreatorCommand.class);
@@ -30,6 +33,7 @@ public final class MicroKits extends JavaPlugin implements MicroKitsProvider {
     @Override
     public void onEnable() {
         MicroKitsAPI.setProvider(this);
+        getConfigManager().loadAll(getConfig());
 
         getServer().getPluginManager().registerEvents(new KitCreatorListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(getPlayers(), (KitManagerImpl) getKits()), this);
@@ -53,5 +57,10 @@ public final class MicroKits extends JavaPlugin implements MicroKitsProvider {
     @Override
     public PlayerManager getPlayers() {
         return PlayerManagerImpl.INSTANCE;
+    }
+
+    @Override
+    public ConfigManager getConfigManager() {
+        return configs;
     }
 }

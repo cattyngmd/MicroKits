@@ -4,4 +4,6 @@ public interface MicroKitsProvider {
     KitManager getKits();
 
     PlayerManager getPlayers();
+
+    ConfigManager getConfigManager();
 }

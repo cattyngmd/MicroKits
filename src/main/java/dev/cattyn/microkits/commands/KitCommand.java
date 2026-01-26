@@ -3,6 +3,7 @@ package dev.cattyn.microkits.commands;
 import dev.cattyn.microkits.api.Kit;
 import dev.cattyn.microkits.api.MicroKitsAPI;
 import dev.cattyn.microkits.api.MicroKitsProvider;
+import dev.cattyn.microkits.config.MainConfig;
 import dev.cattyn.microkits.kit.PlayerKit;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -21,16 +22,24 @@ import static dev.cattyn.microkits.utils.CommandUtil.error;
 @Command("kit")
 @Permission("microkits.kit")
 public class KitCommand {
-    private static final short MAX_KITS = 10;
-
     @Subcommand("save")
     public static void save(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
         MicroKitsProvider provider = MicroKitsAPI.getProvider();
+        MainConfig config = provider.getConfigManager().get(MainConfig.class);
 
         if (!(sender instanceof Player player)) return;
         List<Kit> kits = provider.getKits().get(player.getUniqueId());
-        if (kits.size() >= MAX_KITS) {
+
+        if (kits.size() >= config.maxKits()) {
             error("Too many kits!");
+        }
+
+        if (name.length() < config.minKitName()) {
+            error("Kit name is too short!");
+        }
+
+        if (name.length() > config.maxKitName()) {
+            error("Kit name is too long!");
         }
 
         PlayerKit kit = new PlayerKit(name);

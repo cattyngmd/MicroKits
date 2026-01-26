@@ -1,5 +1,8 @@
 package dev.cattyn.microkits.commands;
 
+import dev.cattyn.microkits.api.MicroKitsAPI;
+import dev.cattyn.microkits.api.MicroKitsProvider;
+import dev.cattyn.microkits.config.KitCreatorConfig;
 import dev.cattyn.microkits.kitcreator.KitCreatorInventory;
 import dev.cattyn.microkits.kitcreator.KitCreatorItems;
 import dev.jorel.commandapi.annotations.Alias;
@@ -21,7 +24,7 @@ public class KitCreatorCommand {
     @Default
     public static void creator(CommandSender sender) {
         Player player = (Player) sender;
-        List<ItemStack> kitStacks = KitCreatorItems.getStacks();
+        List<ItemStack> kitStacks = MicroKitsAPI.getProvider().getConfigManager().get(KitCreatorConfig.class).items();
         int size = (int) (Math.ceil(kitStacks.size() / 9f) * 9);
 
         InventoryHolder holder = new KitCreatorInventory(size);
