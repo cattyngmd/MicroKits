@@ -42,6 +42,10 @@ public class KitCommand {
             error("Kit name is too long!");
         }
 
+        if (provider.getKits().isOnCooldown(player.getUniqueId(), config.saveCooldownMs())) {
+            error("Too fast! Slow it down!");
+        }
+
         PlayerKit kit = new PlayerKit(name);
         int i = 0;
         for (ItemStack stack : player.getInventory()) {

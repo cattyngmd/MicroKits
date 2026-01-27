@@ -12,5 +12,7 @@ public interface KitManager {
 
     boolean remove(UUID owner, String name);
 
+    boolean isOnCooldown(UUID owner, int timeMs);
+
     KitStorage getStorage();
 }

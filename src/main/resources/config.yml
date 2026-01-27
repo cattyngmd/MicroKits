@@ -2,6 +2,7 @@ main:
   max-kits: 10
   min-kit-name: 1
   max-kit-name: 16
+  save-cooldown-ms: 5000
 
 kitcreator:
   slot-0:

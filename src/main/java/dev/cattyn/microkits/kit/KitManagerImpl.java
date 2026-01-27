@@ -10,7 +10,9 @@ import java.util.*;
 public class KitManagerImpl implements KitManager {
     public static final KitManagerImpl INSTANCE = new KitManagerImpl();
 
+    private final Map<UUID, Long> saveCooldown = new HashMap<>();
     private final Map<UUID, List<Kit>> localKits = new HashMap<>();
+
     private final KitStorage storage = new KitStorageJson(MicroKits.getKitsPath());
 
     private KitManagerImpl() {
@@ -32,6 +34,7 @@ public class KitManagerImpl implements KitManager {
     public boolean remove(UUID id, String name) {
         List<Kit> kits = localKits.computeIfAbsent(id, uuid -> new ArrayList<>());
         boolean bl = kits.removeIf(local -> local.getName().equalsIgnoreCase(name));
+        saveCooldown.put(id, System.currentTimeMillis());
         storage.save(id, kits);
         return bl;
     }
@@ -41,8 +44,14 @@ public class KitManagerImpl implements KitManager {
         List<Kit> kits = localKits.computeIfAbsent(id, uuid -> new ArrayList<>());
         kits.removeIf(local -> local.getName().equalsIgnoreCase(kit.getName()));
         kits.add(kit);
+        saveCooldown.put(id, System.currentTimeMillis());
         storage.save(id, kits);
         return true;
+    }
+
+    @Override
+    public boolean isOnCooldown(UUID id, int timeMs) {
+        return System.currentTimeMillis() < saveCooldown.getOrDefault(id, 0L) + timeMs;
     }
 
     @Override
@@ -57,5 +66,6 @@ public class KitManagerImpl implements KitManager {
     public void savePlayer(UUID uuid) {
         storage.save(uuid, get(uuid));
         localKits.remove(uuid);
+        saveCooldown.remove(uuid);
     }
 }
