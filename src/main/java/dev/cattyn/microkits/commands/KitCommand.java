@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static dev.cattyn.microkits.utils.CommandUtil.error;
 
@@ -70,11 +71,6 @@ public class KitCommand {
     }
 
     @Subcommand("load")
-    public static void loadSub(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
-        load(sender, name);
-    }
-
-    @Default
     public static void load(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
         MicroKitsProvider provider = MicroKitsAPI.getProvider();
 
@@ -91,5 +87,30 @@ public class KitCommand {
 
         provider.getPlayers().select(player.getUniqueId(), kit);
         kit.getItems().forEach((i, s) -> player.getInventory().setItem(i, s));
+    }
+
+    @Subcommand("list")
+    public static void list(CommandSender sender) {
+        MicroKitsProvider provider = MicroKitsAPI.getProvider();
+
+        if (!(sender instanceof Player player)) return;
+
+        String kits = provider.getKits().get(player.getUniqueId())
+                .stream()
+                .map(Kit::getName)
+                .sorted()
+                .collect(Collectors.joining(", "));
+
+        sender.sendMessage("Kits available: " + kits);
+    }
+
+    @Default
+    public static void defaultCommand(CommandSender sender) {
+        list(sender);
+    }
+
+    @Default
+    public static void defaultCommand(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
+        load(sender, name);
     }
 }
