@@ -21,7 +21,8 @@ import java.util.List;
 public class KitCreatorCommand {
     @Default
     public static void creator(CommandSender sender) {
-        Player player = (Player) sender;
+        if (!(sender instanceof Player player)) return;
+
         List<ItemStack> kitStacks = MicroKitsAPI.getProvider().getConfigManager().get(KitCreatorConfig.class).items();
         int size = (int) (Math.max(Math.ceil(kitStacks.size() / 9f), 1) * 9);
 
