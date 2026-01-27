@@ -1,4 +1,4 @@
-package dev.cattyn.microkits.config;
+package dev.cattyn.microkits.config.section;
 
 import dev.cattyn.microkits.api.config.Config;
 import org.bukkit.configuration.ConfigurationSection;

@@ -1,7 +1,7 @@
 package dev.cattyn.microkits.commands;
 
 import dev.cattyn.microkits.api.MicroKitsAPI;
-import dev.cattyn.microkits.config.KitCreatorConfig;
+import dev.cattyn.microkits.config.section.KitCreatorConfig;
 import dev.cattyn.microkits.kitcreator.KitCreatorInventory;
 import dev.jorel.commandapi.annotations.Alias;
 import dev.jorel.commandapi.annotations.Command;

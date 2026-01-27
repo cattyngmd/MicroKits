@@ -2,6 +2,8 @@ package dev.cattyn.microkits.config;
 
 import dev.cattyn.microkits.api.config.Config;
 import dev.cattyn.microkits.api.config.ConfigManager;
+import dev.cattyn.microkits.config.section.KitCreatorConfig;
+import dev.cattyn.microkits.config.section.MainConfig;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
