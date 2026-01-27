@@ -1,12 +1,13 @@
 package dev.cattyn.microkits.commands;
 
-import dev.cattyn.microkits.api.Kit;
-import dev.cattyn.microkits.kits.KitManagerImpl;
-import dev.cattyn.microkits.kits.PlayerKit;
-import dev.cattyn.microkits.players.PlayerManagerImpl;
-import dev.cattyn.microkits.utils.KitStorageUtil;
+import dev.cattyn.microkits.api.kit.Kit;
+import dev.cattyn.microkits.api.MicroKitsAPI;
+import dev.cattyn.microkits.api.MicroKitsProvider;
+import dev.cattyn.microkits.config.section.MainConfig;
+import dev.cattyn.microkits.kit.PlayerKit;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
+import dev.jorel.commandapi.annotations.Permission;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AStringArgument;
 import dev.jorel.commandapi.exceptions.WrapperCommandSyntaxException;
@@ -15,20 +16,35 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static dev.cattyn.microkits.utils.CommandUtil.error;
 
 @Command("kit")
+@Permission("microkits.kit")
 public class KitCommand {
-    private static final short MAX_KITS = 10;
-
     @Subcommand("save")
     public static void save(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
-        if (!(sender instanceof Player player)) return;
+        MicroKitsProvider provider = MicroKitsAPI.getProvider();
+        MainConfig config = provider.getConfigManager().get(MainConfig.class);
 
-        List<Kit> kits = KitManagerImpl.INSTANCE.get(player.getUniqueId());
-        if (kits.size() >= MAX_KITS) {
+        if (!(sender instanceof Player player)) return;
+        List<Kit> kits = provider.getKits().get(player.getUniqueId());
+
+        if (kits.size() >= config.maxKits()) {
             error("Too many kits!");
+        }
+
+        if (name.length() < config.minKitName()) {
+            error("Kit name is too short!");
+        }
+
+        if (name.length() > config.maxKitName()) {
+            error("Kit name is too long!");
+        }
+
+        if (provider.getKits().isOnCooldown(player.getUniqueId(), config.saveCooldownMs())) {
+            error("Too fast! Slow it down!");
         }
 
         PlayerKit kit = new PlayerKit(name);
@@ -39,14 +55,15 @@ public class KitCommand {
             }
             i++;
         }
-        KitManagerImpl.INSTANCE.save(player.getUniqueId(), kit);
-        KitStorageUtil.save(player.getUniqueId());
+        provider.getKits().save(player.getUniqueId(), kit);
     }
 
     @Subcommand("delete")
     public static void delete(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
+        MicroKitsProvider provider = MicroKitsAPI.getProvider();
+
         if (!(sender instanceof Player player)) return;
-        boolean removed = KitManagerImpl.INSTANCE.remove(player.getUniqueId(), name);
+        boolean removed = provider.getKits().remove(player.getUniqueId(), name);
 
         if (!removed) {
             error("Kit was not found.");
@@ -54,24 +71,46 @@ public class KitCommand {
     }
 
     @Subcommand("load")
-    public static void loadSub(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
-        load(sender, name);
-    }
-
-    @Default
     public static void load(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
+        MicroKitsProvider provider = MicroKitsAPI.getProvider();
+
         if (!(sender instanceof Player player)) return;
 
-        if (PlayerManagerImpl.INSTANCE.didSelect(player.getUniqueId())) {
+        if (provider.getPlayers().didSelect(player.getUniqueId())) {
             error("You have already selected a kit!");
         }
 
-        Kit kit = KitManagerImpl.INSTANCE.get(player.getUniqueId(), name);
+        Kit kit = provider.getKits().get(player.getUniqueId(), name);
         if (kit == null) {
             error("Kit not found!");
         }
 
-        PlayerManagerImpl.INSTANCE.add(player, kit);
+        provider.getPlayers().select(player.getUniqueId(), kit);
         kit.getItems().forEach((i, s) -> player.getInventory().setItem(i, s));
+    }
+
+    @Subcommand("list")
+    public static void list(CommandSender sender) {
+        MicroKitsProvider provider = MicroKitsAPI.getProvider();
+
+        if (!(sender instanceof Player player)) return;
+
+        String kits = provider.getKits().get(player.getUniqueId())
+                .stream()
+                .map(Kit::getName)
+                .sorted()
+                .collect(Collectors.joining(", "));
+
+        sender.sendMessage("Kits available: " + kits);
+    }
+
+    @Default
+    public static void defaultCommand(CommandSender sender) {
+        list(sender);
+    }
+
+    @Default
+    public static void defaultCommand(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
+        load(sender, name);
     }
 }

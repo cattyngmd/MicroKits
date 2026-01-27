@@ -1,4 +1,4 @@
-package dev.cattyn.microkits.api;
+package dev.cattyn.microkits.api.kit;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,4 +11,8 @@ public interface KitManager {
     boolean save(UUID owner, Kit kit);
 
     boolean remove(UUID owner, String name);
+
+    boolean isOnCooldown(UUID owner, int timeMs);
+
+    KitStorage getStorage();
 }

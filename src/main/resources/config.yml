@@ -1,0 +1,208 @@
+main:
+  max-kits: 10
+  min-kit-name: 1
+  max-kit-name: 16
+  save-cooldown-ms: 5000
+
+kitcreator:
+  slot-0:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:aqua_affinity: 1
+        minecraft:mending: 1
+        minecraft:protection: 4
+        minecraft:respiration: 3
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-1:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:mending: 1
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-2:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:mending: 1
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-3:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:depth_strider: 3
+        minecraft:feather_falling: 4
+        minecraft:mending: 1
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-4:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:fire_aspect: 2
+        minecraft:knockback: 2
+        minecraft:mending: 1
+        minecraft:sharpness: 5
+        minecraft:sweeping_edge: 3
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-5:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_PICKAXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:efficiency: 5
+        minecraft:fortune: 3
+  slot-6:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: BOW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:flame: 1
+        minecraft:infinity: 1
+        minecraft:mending: 1
+        minecraft:power: 5
+        minecraft:punch: 2
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-7:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: TIPPED_ARROW
+    amount: 64
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:long_swiftness
+  slot-8:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: TIPPED_ARROW
+    amount: 64
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:long_slowness
+  slot-9:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:aqua_affinity: 1
+        minecraft:blast_protection: 4
+        minecraft:mending: 1
+        minecraft:respiration: 3
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-10:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:blast_protection: 4
+        minecraft:mending: 1
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-11:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:blast_protection: 4
+        minecraft:mending: 1
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-12:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: NETHERITE_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:blast_protection: 4
+        minecraft:depth_strider: 3
+        minecraft:feather_falling: 4
+        minecraft:mending: 1
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+  slot-13:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: TOTEM_OF_UNDYING
+  slot-14:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: ENCHANTED_GOLDEN_APPLE
+    amount: 64
+  slot-15:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: END_CRYSTAL
+    amount: 64
+  slot-16:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: EXPERIENCE_BOTTLE
+    amount: 64
+  slot-17:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: ENDER_PEARL
+    amount: 16
+  slot-18:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: ENDER_CHEST
+    amount: 64
+  slot-19:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: OBSIDIAN
+    amount: 64
+  slot-20:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3839
+    type: CHORUS_FRUIT
+    amount: 64

@@ -1,15 +1,19 @@
-package dev.cattyn.microkits.kits;
+package dev.cattyn.microkits.kit;
 
-import dev.cattyn.microkits.api.Kit;
-import dev.cattyn.microkits.api.KitManager;
-import dev.cattyn.microkits.utils.KitStorageUtil;
+import dev.cattyn.microkits.MicroKits;
+import dev.cattyn.microkits.api.kit.Kit;
+import dev.cattyn.microkits.api.kit.KitManager;
+import dev.cattyn.microkits.api.kit.KitStorage;
 
 import java.util.*;
 
 public class KitManagerImpl implements KitManager {
     public static final KitManagerImpl INSTANCE = new KitManagerImpl();
 
+    private final Map<UUID, Long> saveCooldown = new HashMap<>();
     private final Map<UUID, List<Kit>> localKits = new HashMap<>();
+
+    private final KitStorage storage = new KitStorageJson(MicroKits.getKitsPath());
 
     private KitManagerImpl() {
     }
@@ -30,7 +34,8 @@ public class KitManagerImpl implements KitManager {
     public boolean remove(UUID id, String name) {
         List<Kit> kits = localKits.computeIfAbsent(id, uuid -> new ArrayList<>());
         boolean bl = kits.removeIf(local -> local.getName().equalsIgnoreCase(name));
-        KitStorageUtil.save(id);
+        saveCooldown.put(id, System.currentTimeMillis());
+        storage.save(id, kits);
         return bl;
     }
 
@@ -39,19 +44,28 @@ public class KitManagerImpl implements KitManager {
         List<Kit> kits = localKits.computeIfAbsent(id, uuid -> new ArrayList<>());
         kits.removeIf(local -> local.getName().equalsIgnoreCase(kit.getName()));
         kits.add(kit);
-        KitStorageUtil.save(id);
+        saveCooldown.put(id, System.currentTimeMillis());
+        storage.save(id, kits);
         return true;
     }
 
-    // data
-    public void saveData(UUID uuid) {
-        KitStorageUtil.save(uuid);
-        localKits.remove(uuid);
+    @Override
+    public boolean isOnCooldown(UUID id, int timeMs) {
+        return System.currentTimeMillis() < saveCooldown.getOrDefault(id, 0L) + timeMs;
     }
 
-    public void loadData(UUID uuid) {
-        List<Kit> kits = KitStorageUtil.load(uuid);
-        if (kits.isEmpty()) return;
-        localKits.put(uuid, kits);
+    @Override
+    public KitStorage getStorage() {
+        return storage;
+    }
+
+    public void loadPlayer(UUID uuid) {
+        storage.load(uuid).ifPresent(kits -> localKits.put(uuid, kits));
+    }
+
+    public void savePlayer(UUID uuid) {
+        storage.save(uuid, get(uuid));
+        localKits.remove(uuid);
+        saveCooldown.remove(uuid);
     }
 }

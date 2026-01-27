@@ -1,11 +1,13 @@
-package dev.cattyn.microkits.kits;
+package dev.cattyn.microkits.kit;
 
-import com.google.gson.*;
-import dev.cattyn.microkits.api.Kit;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import dev.cattyn.microkits.api.kit.Kit;
 import dev.cattyn.microkits.utils.SerializationUtil;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +37,7 @@ public class PlayerKit implements Kit {
             for (var entry : kit.getItems().entrySet()) {
                 JsonObject part = new JsonObject();
                 part.addProperty("slot", entry.getKey());
-                part.addProperty("stack", SerializationUtil.serialize(entry.getValue()));
+                part.add("stack", SerializationUtil.serialize(entry.getValue()));
                 content.add(part);
             }
 
@@ -65,9 +67,9 @@ public class PlayerKit implements Kit {
 
                 int slot = part.get("slot").getAsInt();
                 try {
-                    ItemStack stack = SerializationUtil.deserialize(part.get("stack").getAsString());
+                    ItemStack stack = SerializationUtil.deserialize(part.get("stack").getAsJsonObject());
                     kit.getItems().put(slot, stack);
-                } catch (IOException e) {
+                } catch (Throwable e) {
                     throw new JsonParseException("Invalid content.");
                 }
 
