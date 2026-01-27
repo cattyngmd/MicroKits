@@ -205,8 +205,3 @@ kitcreator:
     v: 3839
     type: CHORUS_FRUIT
     amount: 64
-  slot-21:
-    ==: org.bukkit.inventory.ItemStack
-    v: 3839
-    type: COBWEB
-    amount: 64
