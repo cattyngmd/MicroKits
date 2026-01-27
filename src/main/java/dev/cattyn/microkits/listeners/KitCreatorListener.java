@@ -8,11 +8,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
-public class KitCreatorListener implements Listener {
-    private final KitCreatorController controller;
-
-    public KitCreatorListener(MicroKits kits) {
-        this.controller = new KitCreatorController(kits);
+public record KitCreatorListener(KitCreatorController controller) implements Listener {
+    public KitCreatorListener(MicroKits controller) {
+        this(new KitCreatorController(controller));
     }
 
     @EventHandler

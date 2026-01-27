@@ -8,15 +8,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerListener implements Listener {
-    private final PlayerManager playerManager;
-    private final KitManagerImpl kitManager;
-
-    public PlayerListener(PlayerManager playerManager, KitManagerImpl kitManager) {
-        this.playerManager = playerManager;
-        this.kitManager = kitManager;
-    }
-
+public record PlayerListener(PlayerManager playerManager, KitManagerImpl kitManager) implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         playerManager.removeSelected(event.getPlayer().getUniqueId());
