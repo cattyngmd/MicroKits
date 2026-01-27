@@ -1,9 +1,9 @@
 package dev.cattyn.microkits.kit;
 
 import dev.cattyn.microkits.MicroKits;
-import dev.cattyn.microkits.api.Kit;
-import dev.cattyn.microkits.api.KitManager;
-import dev.cattyn.microkits.api.KitStorage;
+import dev.cattyn.microkits.api.kit.Kit;
+import dev.cattyn.microkits.api.kit.KitManager;
+import dev.cattyn.microkits.api.kit.KitStorage;
 
 import java.util.*;
 

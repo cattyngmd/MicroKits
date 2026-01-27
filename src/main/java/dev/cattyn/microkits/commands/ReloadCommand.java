@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender;
 public class ReloadCommand {
     @Default
     public static void reload(CommandSender sender) {
-        MicroKitsAPI.getProvider().getConfigManager().loadAll(
+        MicroKitsAPI.getProvider().getConfigManager().reload(
                 Bukkit.getPluginManager().getPlugin("microkits").getConfig()
         );
     }

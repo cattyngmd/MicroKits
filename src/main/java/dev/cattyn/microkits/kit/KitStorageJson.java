@@ -5,8 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.cattyn.microkits.MicroKits;
-import dev.cattyn.microkits.api.Kit;
-import dev.cattyn.microkits.api.KitStorage;
+import dev.cattyn.microkits.api.kit.Kit;
+import dev.cattyn.microkits.api.kit.KitStorage;
 import dev.cattyn.microkits.utils.Globals;
 
 import java.io.IOException;

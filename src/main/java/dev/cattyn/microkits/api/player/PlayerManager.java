@@ -1,5 +1,6 @@
-package dev.cattyn.microkits.api;
+package dev.cattyn.microkits.api.player;
 
+import dev.cattyn.microkits.api.kit.Kit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;

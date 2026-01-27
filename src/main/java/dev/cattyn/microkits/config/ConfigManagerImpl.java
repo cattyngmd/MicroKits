@@ -1,7 +1,7 @@
 package dev.cattyn.microkits.config;
 
-import dev.cattyn.microkits.api.Config;
-import dev.cattyn.microkits.api.ConfigManager;
+import dev.cattyn.microkits.api.config.Config;
+import dev.cattyn.microkits.api.config.ConfigManager;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public final class ConfigManagerImpl implements ConfigManager {
     }
 
     @Override
-    public void loadAll(ConfigurationSection config) {
+    public void reload(ConfigurationSection config) {
         configs.values().forEach(c -> c.load(config));
     }
 

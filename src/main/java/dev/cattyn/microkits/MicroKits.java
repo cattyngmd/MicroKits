@@ -1,6 +1,9 @@
 package dev.cattyn.microkits;
 
 import dev.cattyn.microkits.api.*;
+import dev.cattyn.microkits.api.config.ConfigManager;
+import dev.cattyn.microkits.api.kit.KitManager;
+import dev.cattyn.microkits.api.player.PlayerManager;
 import dev.cattyn.microkits.commands.KitCommand;
 import dev.cattyn.microkits.commands.KitCreatorCommand;
 import dev.cattyn.microkits.config.ConfigManagerImpl;
@@ -32,7 +35,7 @@ public final class MicroKits extends JavaPlugin implements MicroKitsProvider {
     @Override
     public void onEnable() {
         MicroKitsAPI.setProvider(this);
-        getConfigManager().loadAll(getConfig());
+        getConfigManager().reload(getConfig());
 
         getServer().getPluginManager().registerEvents(new KitCreatorListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(getPlayers(), (KitManagerImpl) getKits()), this);

@@ -1,9 +1,9 @@
 package dev.cattyn.microkits.config;
 
-import dev.cattyn.microkits.api.Config;
+import dev.cattyn.microkits.api.config.Config;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class MainConfig implements Config {
+public final class MainConfig implements Config {
     private int maxKits;
     private int minKitName, maxKitName;
     private int saveCooldownMs;

@@ -1,6 +1,6 @@
 package dev.cattyn.microkits.listeners;
 
-import dev.cattyn.microkits.api.PlayerManager;
+import dev.cattyn.microkits.api.player.PlayerManager;
 import dev.cattyn.microkits.kit.KitManagerImpl;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

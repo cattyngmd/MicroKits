@@ -1,6 +1,6 @@
 package dev.cattyn.microkits.commands;
 
-import dev.cattyn.microkits.api.Kit;
+import dev.cattyn.microkits.api.kit.Kit;
 import dev.cattyn.microkits.api.MicroKitsAPI;
 import dev.cattyn.microkits.api.MicroKitsProvider;
 import dev.cattyn.microkits.config.MainConfig;

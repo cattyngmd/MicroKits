@@ -1,7 +1,7 @@
 package dev.cattyn.microkits.players;
 
-import dev.cattyn.microkits.api.Kit;
-import dev.cattyn.microkits.api.PlayerManager;
+import dev.cattyn.microkits.api.kit.Kit;
+import dev.cattyn.microkits.api.player.PlayerManager;
 
 import java.util.HashMap;
 import java.util.Map;

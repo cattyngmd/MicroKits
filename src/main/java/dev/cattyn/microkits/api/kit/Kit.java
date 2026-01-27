@@ -1,4 +1,4 @@
-package dev.cattyn.microkits.api;
+package dev.cattyn.microkits.api.kit;
 
 import org.bukkit.inventory.ItemStack;
 

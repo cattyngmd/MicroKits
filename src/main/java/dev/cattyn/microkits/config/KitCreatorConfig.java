@@ -1,6 +1,6 @@
 package dev.cattyn.microkits.config;
 
-import dev.cattyn.microkits.api.Config;
+import dev.cattyn.microkits.api.config.Config;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class KitCreatorConfig implements Config {
+public final class KitCreatorConfig implements Config {
     private final List<ItemStack> items = new ArrayList<>();
 
     @Override
