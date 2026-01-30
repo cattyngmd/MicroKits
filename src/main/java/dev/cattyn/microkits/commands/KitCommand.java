@@ -100,7 +100,13 @@ public class KitCommand {
 
         if (!(sender instanceof Player player)) return;
 
-        String kits = provider.getKits().get(player.getUniqueId())
+        List<Kit> list = provider.getKits().get(player.getUniqueId());
+        if (list.isEmpty()) {
+            player.sendMessage("You don't have any kits");
+            return;
+        }
+
+        String kits = list
                 .stream()
                 .map(Kit::getName)
                 .sorted()
