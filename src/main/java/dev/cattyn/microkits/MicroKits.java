@@ -28,6 +28,7 @@ public final class MicroKits extends JavaPlugin implements MicroKitsProvider {
 
         saveDefaultConfig();
 
+        Permissions.init();
         CommandAPI.registerCommand(KitCommand.class);
         CommandAPI.registerCommand(KitCreatorCommand.class);
     }
