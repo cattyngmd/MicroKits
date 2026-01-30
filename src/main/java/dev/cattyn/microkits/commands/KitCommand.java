@@ -3,6 +3,7 @@ package dev.cattyn.microkits.commands;
 import dev.cattyn.microkits.api.kit.Kit;
 import dev.cattyn.microkits.api.MicroKitsAPI;
 import dev.cattyn.microkits.api.MicroKitsProvider;
+import dev.cattyn.microkits.config.section.KitCreatorConfig;
 import dev.cattyn.microkits.config.section.MainConfig;
 import dev.cattyn.microkits.kit.PlayerKit;
 import dev.jorel.commandapi.annotations.Command;
@@ -27,6 +28,7 @@ public class KitCommand {
     public static void save(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
         MicroKitsProvider provider = MicroKitsAPI.getProvider();
         MainConfig config = provider.getConfigManager().get(MainConfig.class);
+        KitCreatorConfig creatorConfig = provider.getConfigManager().get(KitCreatorConfig.class);
 
         if (!(sender instanceof Player player)) return;
         List<Kit> kits = provider.getKits().get(player.getUniqueId());
@@ -50,9 +52,12 @@ public class KitCommand {
         PlayerKit kit = new PlayerKit(name);
         int i = 0;
         for (ItemStack stack : player.getInventory()) {
-            if (stack != null) {
-                kit.getItems().put(i, stack.clone());
-            }
+            if (stack == null)
+                continue;
+            if (creatorConfig.items().stream().noneMatch(s -> s.getType() == stack.getType()))
+                continue;
+
+            kit.getItems().put(i, stack.clone());
             i++;
         }
         provider.getKits().save(player.getUniqueId(), kit);
