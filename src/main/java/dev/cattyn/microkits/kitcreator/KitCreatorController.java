@@ -61,9 +61,10 @@ public record KitCreatorController(MicroKits kits) {
     }
 
     public void drag(InventoryDragEvent event) {
-        Inventory inv = event.getInventory();
+        if (!(event.getView().getTopInventory().getHolder() instanceof KitCreatorInventory))
+            return;
 
-        if (inv.getHolder() != null || event.getInventorySlots().size() <= 1)
+        if (event.getInventorySlots().size() <= 1)
             return;
 
         event.setCancelled(true);
