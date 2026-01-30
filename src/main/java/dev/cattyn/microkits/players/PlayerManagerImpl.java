@@ -2,6 +2,8 @@ package dev.cattyn.microkits.players;
 
 import dev.cattyn.microkits.api.kit.Kit;
 import dev.cattyn.microkits.api.player.PlayerManager;
+import dev.cattyn.microkits.kitcreator.KitCreatorInventory;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,5 +27,10 @@ public class PlayerManagerImpl implements PlayerManager {
     @Override
     public void select(UUID player, Kit kit) {
         selectedKits.put(player, kit);
+    }
+
+    @Override
+    public boolean isKitCreatorOpen(Player player) {
+        return player.getOpenInventory().getTopInventory().getHolder() instanceof KitCreatorInventory;
     }
 }

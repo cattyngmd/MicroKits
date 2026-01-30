@@ -12,6 +12,8 @@ public interface PlayerManager {
 
     void select(UUID player, Kit kit);
 
+    boolean isKitCreatorOpen(Player player);
+
     default boolean didSelect(UUID uuid) {
         return getSelected(uuid) != null;
     }
