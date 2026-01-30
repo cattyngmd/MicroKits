@@ -67,7 +67,7 @@ public class PlayerKit implements Kit {
 
                 int slot = part.get("slot").getAsInt();
                 try {
-                    ItemStack stack = SerializationUtil.deserialize(part.get("stack").getAsJsonObject());
+                    ItemStack stack = SerializationUtil.deserialize(part.get("stack"));
                     kit.getItems().put(slot, stack);
                 } catch (Throwable e) {
                     throw new JsonParseException("Invalid content.");
