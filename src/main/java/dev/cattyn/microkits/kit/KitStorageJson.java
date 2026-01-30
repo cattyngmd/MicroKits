@@ -49,6 +49,9 @@ public class KitStorageJson implements KitStorage {
     public Optional<List<Kit>> load(UUID uuid) {
         Path path = MicroKits.getKitsPath().resolve(uuid.toString() + ".json");
 
+        if (!path.toFile().exists())
+            return Optional.empty();
+
         try {
             String s = Files.readString(path);
             JsonObject object = JsonParser.parseString(s).getAsJsonObject();
