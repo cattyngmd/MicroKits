@@ -28,7 +28,6 @@ public class KitCommand {
     public static void save(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
         MicroKitsProvider provider = MicroKitsAPI.getProvider();
         MainConfig config = provider.getConfigManager().get(MainConfig.class);
-        KitCreatorConfig creatorConfig = provider.getConfigManager().get(KitCreatorConfig.class);
 
         if (!(sender instanceof Player player)) return;
         List<Kit> kits = provider.getKits().get(player.getUniqueId());
@@ -52,9 +51,7 @@ public class KitCommand {
         PlayerKit kit = new PlayerKit(name);
         int i = 0;
         for (ItemStack stack : player.getInventory()) {
-            if (stack == null)
-                continue;
-            if (creatorConfig.items().stream().noneMatch(s -> s.getType() == stack.getType()))
+            if (stack == null || !isInKitCreator(stack))
                 continue;
 
             kit.getItems().put(i, stack.clone());
@@ -91,7 +88,10 @@ public class KitCommand {
         }
 
         provider.getPlayers().select(player.getUniqueId(), kit);
-        kit.getItems().forEach((i, s) -> player.getInventory().setItem(i, s));
+        kit.getItems().entrySet()
+                .stream()
+                .filter(entry -> isInKitCreator(entry.getValue()))
+                .forEach(entry -> player.getInventory().setItem(entry.getKey(), entry.getValue()));
     }
 
     @Subcommand("list")
@@ -123,5 +123,10 @@ public class KitCommand {
     @Default
     public static void defaultCommand(CommandSender sender, @AStringArgument String name) throws WrapperCommandSyntaxException {
         load(sender, name);
+    }
+
+    private static boolean isInKitCreator(ItemStack stack) {
+        KitCreatorConfig creatorConfig = MicroKitsAPI.getProvider().getConfigManager().get(KitCreatorConfig.class);
+        return creatorConfig.items().stream().anyMatch(s -> s.getType() == stack.getType());
     }
 }
