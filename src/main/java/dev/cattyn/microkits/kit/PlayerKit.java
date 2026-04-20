@@ -50,7 +50,7 @@ public class PlayerKit implements Kit {
             byte[] contentBytes = CompressionUtil.compress(out.toByteArray());
             String contentString = Base64.getEncoder().encodeToString(contentBytes);
 
-            object.addProperty("content_base64", contentString);
+            object.addProperty("base64", contentString);
 
             return object;
         }
@@ -61,12 +61,12 @@ public class PlayerKit implements Kit {
 
             JsonObject object = jsonElement.getAsJsonObject();
 
-            if (!object.has("name") || !object.has("content_base64"))
+            if (!object.has("name") || !object.has("base64"))
                 throw new JsonParseException("Invalid json object.");
 
 
             String name = object.get("name").getAsString();
-            String contentString = object.get("content_base64").getAsString();
+            String contentString = object.get("base64").getAsString();
             byte[] contentBytesCompressed = Base64.getDecoder().decode(contentString);
             byte[] contentBytes;
 
