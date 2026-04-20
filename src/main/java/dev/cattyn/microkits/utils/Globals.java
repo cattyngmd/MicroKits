@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 
 public interface Globals {
     Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
             .setLenient()
             .create();
 }
