@@ -9,7 +9,7 @@ import dev.cattyn.microkits.kit.PlayerKit;
 import dev.cattyn.microkits.utils.SerializationUtil;
 import org.bukkit.inventory.ItemStack;
 
-public class MigratorV1ToV2 implements Migrator {
+public final class MigratorV1ToV2 implements Migrator {
     private static final PlayerKit.Serializer serializer = new PlayerKit.Serializer();
 
     @Override
