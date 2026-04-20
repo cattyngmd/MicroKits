@@ -58,6 +58,7 @@ public class KitCommand {
             i++;
         }
         provider.getKits().save(player.getUniqueId(), kit);
+        sender.sendMessage("Successfully saved kit " + kit.getName());
     }
 
     @Subcommand("delete")
@@ -70,6 +71,8 @@ public class KitCommand {
         if (!removed) {
             error("Kit was not found.");
         }
+
+        sender.sendMessage("Successfully deleted provided kit");
     }
 
     @Subcommand("load")
@@ -92,6 +95,8 @@ public class KitCommand {
                 .stream()
                 .filter(entry -> isInKitCreator(entry.getValue()))
                 .forEach(entry -> player.getInventory().setItem(entry.getKey(), entry.getValue()));
+
+        sender.sendMessage("Successfully loaded kit " + kit.getName());
     }
 
     @Subcommand("list")
