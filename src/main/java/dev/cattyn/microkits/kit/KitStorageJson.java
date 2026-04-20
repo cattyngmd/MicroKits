@@ -4,9 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dev.cattyn.microkits.MicroKits;
 import dev.cattyn.microkits.api.kit.Kit;
 import dev.cattyn.microkits.api.kit.KitStorage;
+import dev.cattyn.microkits.kit.migrations.MigratorV1ToV2;
 import dev.cattyn.microkits.utils.Globals;
 
 import java.io.IOException;
@@ -18,7 +18,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class KitStorageJson implements KitStorage {
+    public static final int KIT_FORMAT = 2;
+
     private static final PlayerKit.Serializer serializer = new PlayerKit.Serializer();
+
+    private static final KitMigration migrations = new KitMigration()
+            .register(new MigratorV1ToV2());
 
     private final Path root;
 
@@ -34,9 +39,14 @@ public class KitStorageJson implements KitStorage {
         JsonObject object = new JsonObject();
         JsonArray array = new JsonArray();
         for (Kit kit : kits) {
-            array.add(serializer.serialize(kit));
+            try {
+                array.add(serializer.serialize(kit));
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
         }
         object.add("kits", array);
+        object.addProperty("v", KIT_FORMAT);
 
         try {
             Files.writeString(path, Globals.GSON.toJson(object));
@@ -47,7 +57,7 @@ public class KitStorageJson implements KitStorage {
 
     @Override
     public Optional<List<Kit>> load(UUID uuid) {
-        Path path = MicroKits.getKitsPath().resolve(uuid.toString() + ".json");
+        Path path = getPath(uuid);
 
         if (!path.toFile().exists())
             return Optional.empty();
@@ -55,6 +65,9 @@ public class KitStorageJson implements KitStorage {
         try {
             String s = Files.readString(path);
             JsonObject object = JsonParser.parseString(s).getAsJsonObject();
+
+            object = migrations.migrate(object);
+
             if (!object.has("kits")) return Optional.empty();
 
             List<Kit> kits = new ArrayList<>();
@@ -63,10 +76,14 @@ public class KitStorageJson implements KitStorage {
 
             if (kits.isEmpty()) return Optional.empty();
             return Optional.of(kits);
-        } catch (IOException e) {
+        } catch (IOException | KitMigration.MigrationException e) {
             e.printStackTrace();
         }
 
         return Optional.empty();
+    }
+
+    private Path getPath(UUID uuid) {
+        return root.resolve(uuid.toString() + ".json");
     }
 }
